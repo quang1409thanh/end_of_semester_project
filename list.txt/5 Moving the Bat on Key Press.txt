@@ -1,3 +1,5 @@
 ở bài này đã load được cái paddle rồi 
 ở bài tiếp theo sẽ di chuyển cái bat này
 bây giờ đã di chuyển được cái bat rồi nên sẽ up lên github luôn
+di chuyển được đến tường thì nó sẽ dừng
+bài 5 với 6 gộp lại thành 1 cái

@@ -45,6 +45,10 @@ void ball_collision(){
     if(bally<bkhmin||bally>bkh-20){
         ballvely*=-1;
     }
+    int ballscaling=22;// hoặc bằng 20 check sau đoạn này 
+    if(bally+ballscaling>baty&&bally<baty+22&&ballx>batx&&ballx<batx+91){
+        ballvely*=-1;
+    }
 }
 int main(int argc, char** argv){
     SDL_Init(SDL_INIT_VIDEO);
