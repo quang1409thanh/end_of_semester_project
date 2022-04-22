@@ -1,0 +1,3 @@
+ở bài này đã load được cái paddle rồi 
+ở bài tiếp theo sẽ di chuyển cái bat này
+bây giờ đã di chuyển được cái bat rồi nên sẽ up lên github luôn
