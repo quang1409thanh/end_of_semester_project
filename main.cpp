@@ -71,6 +71,34 @@ void moveBall(){
     bally+=ballvely;
 }
 
+bool ball_brick_collision_detect(SDL_Rect rect1,SDL_Rect rect2){
+    if(rect1.x>rect2.x+rect2.w){
+        return false;
+    }
+    if(rect1.x+rect1.w<rect2.x){
+        return false;
+    }
+    if(rect1.y>rect2.y+rect2.h){
+        return false;
+    }
+    if(rect1.y+rect1.h<rect2.y){
+        return false;
+    }
+}
+
+void ball_brick_collision(){
+    bool a;
+    for(int i=0;i<3;i++){
+        for(int j=0;j<7;j++){
+            a=ball_brick_collision_detect(brickrect[i][j],ballrect);
+            if(a){
+            brickrect[i][j].x=30000;
+            ballvely=-ballvely;
+            }
+            a=false;
+        }
+    }
+}
 
 void ball_collision(){
     if(ballx<bkwmin||ballx>bkw-20){
@@ -84,6 +112,7 @@ void ball_collision(){
         ballvely*=-1;
     }
 }
+
 int main(int argc, char** argv){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window = SDL_CreateWindow("My Game",
@@ -111,7 +140,7 @@ int main(int argc, char** argv){
         SDL_Rect batrect ={batx,baty,91,22};
         moveBall();
         ball_collision();
-    
+        ball_brick_collision();
         SDL_RenderCopy(renderer, bktexture, NULL,&bkrect);
         SDL_RenderCopy(renderer, balltexture, NULL, &ballrect);
         SDL_RenderCopy(renderer, battexture, NULL, &batrect);
