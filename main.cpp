@@ -10,6 +10,10 @@ int bally=10;
 int ballvelx=1;
 int ballvely=1;
 
+int bkw=800;
+int bkh=600;
+int bkwmin=0;
+int bkhmin=0;
 void EnvenHandler(){
     // do something
     SDL_PollEvent(&event);
@@ -23,6 +27,14 @@ void moveBall(){
     bally+=ballvely;
 }
 
+void ball_collision(){
+    if(ballx<bkwmin||ballx>bkw-20){
+        ballvelx*=-1;
+    }
+    if(bally<bkhmin||bally>bkh-20){
+        ballvely*=-1;
+    }
+}
 int main(int argc, char** argv){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window = SDL_CreateWindow("My Game",
@@ -44,6 +56,7 @@ int main(int argc, char** argv){
         EnvenHandler();
         SDL_Rect ballrect ={ballx,bally,20,20};
         moveBall();
+        ball_collision();
         SDL_RenderCopy(renderer, bktexture, NULL,&bkrect);
         SDL_RenderCopy(renderer, balltexture, NULL, &ballrect);
         SDL_RenderPresent(renderer);
