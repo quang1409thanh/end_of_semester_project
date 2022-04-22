@@ -1,0 +1,2 @@
+ở bài này đã di chuyển được quả bóng theo 1 hướng nhất định rồi
+nhưng chưa kiểm soát được vận tốc của nó
