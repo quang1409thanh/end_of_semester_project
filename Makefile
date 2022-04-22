@@ -1,0 +1,2 @@
+all:
+	g++ -IE:\software\SDL2-2.0.20\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\include\SDL2 -LE:\software\SDL2-2.0.20\x86_64-w64-mingw32\lib -LE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\lib -LE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\lib -LE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer

@@ -1,0 +1,2 @@
+xong code bài này có thể xử lí sự kiện bằng nút quit từ chuột
+chưa có ứng dụng nhiều hơn nữa
