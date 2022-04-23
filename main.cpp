@@ -5,6 +5,20 @@ bool quit=false;
 
 SDL_Event event;
 
+SDL_Window *window;
+                                          
+SDL_Renderer *renderer ;
+
+SDL_Surface *brick;
+SDL_Surface *ball;
+SDL_Surface *bk;
+SDL_Surface *bat;
+
+SDL_Texture *bricktexture;
+SDL_Texture *balltexture;
+SDL_Texture *bktexture;
+SDL_Texture *battexture;
+
 int ballx=10;
 int bally=500;
 int ballvelx=1;
@@ -23,17 +37,7 @@ int batx=bkw/2;
 int baty=bkh-22;
 
 int delete_brick_count=0;
-int no_of_brick=21;// hoặc 23 check sau
-SDL_Surface *brick;
-SDL_Texture *bricktexture;
-
-SDL_Window *window = SDL_CreateWindow("My Game",
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          800, 600,
-                                          SDL_WINDOW_SHOWN);
-                                          
-SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+int no_of_brick=21; // do có 21 viên gạch trong game
 
 SDL_Rect brickrect[3][7];
 SDL_Rect ballrect;
@@ -102,7 +106,7 @@ void ball_brick_collision(){
     for(int i=0;i<3;i++){
         for(int j=0;j<7;j++){
             a=ball_brick_collision_detect(brickrect[i][j],ballrect);
-            if(a){
+            if(a==true){
             brickrect[i][j].x=30000;
             ballvely=-ballvely;
             delete_brick_count++;
@@ -116,7 +120,7 @@ void ball_collision(){
     if(ballx<bkwmin||ballx>bkw-20){
         ballvelx*=-1;
     }
-    if(bally<bkhmin||bally>bkh-20){
+    if(bally<bkhmin){
         ballvely*=-1;
     }
     int ballscaling=22;// hoặc bằng 20 check sau đoạn này 
@@ -125,30 +129,55 @@ void ball_collision(){
     }
 }
 
+void Destroy(){
+    SDL_DestroyTexture(battexture);
+    SDL_DestroyTexture(bricktexture);
+    SDL_DestroyTexture(bktexture);
+    SDL_DestroyTexture(balltexture);
+    SDL_FreeSurface(bat);
+    SDL_FreeSurface(brick);
+    SDL_FreeSurface(bk);
+    SDL_FreeSurface(ball);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+}
 void winning(){
     SDL_Surface *win=IMG_Load("win.png");
     SDL_Texture *wintexture=SDL_CreateTextureFromSurface(renderer,win);
-    SDL_Rect winrect={250,200,350,350};
+    SDL_Rect winrect={250,100,350,350};
     SDL_RenderCopy(renderer,wintexture,NULL,&winrect);
-    // SDL_RenderPresent(renderer);
+    SDL_RenderPresent(renderer);
+    while(1){
+        SDL_PollEvent(&event);
+        if(event.type == SDL_QUIT){
+            quit = true;
+            break;
+        }
+    }
+    Destroy();
+    SDL_Quit();
 }
 int main(int argc, char** argv){
     SDL_Init(SDL_INIT_VIDEO);
-    
-    
-    
+    window = SDL_CreateWindow("My Game",
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          800, 600,
+                                          SDL_WINDOW_SHOWN);
+    renderer=SDL_CreateRenderer(window, -1, 0);// thiếu có dòng này mà fix mãi chả biết lỗi ở đâu :v
     SDL_Rect bkrect ={0,0,800,600};
     InitializeBrick();
     
-    SDL_Surface *ball = IMG_Load("ball.png");
-    SDL_Surface *bk = IMG_Load("bg.jpg");
-    SDL_Surface *bat = IMG_Load("batdone.png");
+    ball= IMG_Load("ball.png");
+    bk = IMG_Load("bg.jpg");
+    bat = IMG_Load("batdone.png");
     brick=IMG_Load("img/bricks/violet.png");
     
-    SDL_Texture *balltexture = SDL_CreateTextureFromSurface(renderer, ball);
-    SDL_Texture *bktexture = SDL_CreateTextureFromSurface(renderer, bk);
-    SDL_Texture *battexture = SDL_CreateTextureFromSurface(renderer, bat);
+    balltexture = SDL_CreateTextureFromSurface(renderer, ball);
+    bktexture = SDL_CreateTextureFromSurface(renderer, bk);
+    battexture = SDL_CreateTextureFromSurface(renderer, bat);
     bricktexture=SDL_CreateTextureFromSurface(renderer,brick);
+    SDL_RenderCopy(renderer,bktexture,NULL,&bkrect);
     while(!quit){
         EnvenHandler();
         ballrect ={ballx,bally,20,20};
@@ -158,10 +187,6 @@ int main(int argc, char** argv){
         ball_brick_collision();
         if(delete_brick_count==no_of_brick){
             winning();
-            // while(!quit){
-            //     EnvenHandler();
-            // }
-            // SDL_Quit();
         }
         SDL_RenderCopy(renderer, bktexture, NULL,&bkrect);  
 
@@ -175,5 +200,6 @@ int main(int argc, char** argv){
         SDL_RenderPresent(renderer);
         SDL_RenderClear(renderer);
     }
+    Destroy();
     SDL_Quit();
 }
