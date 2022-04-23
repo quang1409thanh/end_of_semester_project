@@ -2,7 +2,7 @@
 #include<SDL_image.h>
 
 bool quit=false;
-
+void Destroy();
 SDL_Event event;
 
 SDL_Window *window;
@@ -33,7 +33,7 @@ int bkh=600;
 int bkwmin=0;
 int bkhmin=0;
 
-int batx=bkw/2;
+int batx=50;
 int baty=bkh-22;
 
 int delete_brick_count=0;
@@ -81,6 +81,22 @@ void EnvenHandler(){
     }
 }
 
+void gameOver(){
+    SDL_Surface *go=IMG_Load("gameover.png");
+    SDL_Texture *gotexture=SDL_CreateTextureFromSurface(renderer,go);
+    SDL_Rect gorect={0,0,800,600};
+    SDL_RenderCopy(renderer,gotexture,NULL,NULL);
+    SDL_RenderPresent(renderer);
+    while(true){
+        SDL_PollEvent(&event);
+        if(event.type == SDL_QUIT){
+            quit = true;
+            break;
+        }
+    }
+    Destroy();
+    SDL_Quit();
+}
 void moveBall(){
     ballx+=ballvelx;
     bally+=ballvely;
@@ -122,6 +138,9 @@ void ball_collision(){
     }
     if(bally<bkhmin){
         ballvely*=-1;
+    }
+    if(bally>bkh+91){
+        gameOver();
     }
     int ballscaling=22;// hoặc bằng 20 check sau đoạn này 
     if(bally+ballscaling>baty&&bally<baty+22&&ballx>batx&&ballx<batx+91){
