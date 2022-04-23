@@ -120,7 +120,7 @@ void ball_collision(){
     if(ballx<bkwmin||ballx>bkw-20){
         ballvelx*=-1;
     }
-    if(bally<bkhmin||bally>bkh-20){
+    if(bally<bkhmin){
         ballvely*=-1;
     }
     int ballscaling=22;// hoặc bằng 20 check sau đoạn này 

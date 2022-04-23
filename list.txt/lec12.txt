@@ -1,0 +1,1 @@
+ở bài này thì làm nhiệm vụ xảy ra khi thua game bằng cách xóa va chạm vật lí khi vật chạm ở thành dưới của màn hình 
