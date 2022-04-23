@@ -22,8 +22,19 @@ int bkhmin=0;
 int batx=bkw/2;
 int baty=bkh-22;
 
+int delete_brick_count=0;
+int no_of_brick=21;// hoặc 23 check sau
 SDL_Surface *brick;
 SDL_Texture *bricktexture;
+
+SDL_Window *window = SDL_CreateWindow("My Game",
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          800, 600,
+                                          SDL_WINDOW_SHOWN);
+                                          
+SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+
 SDL_Rect brickrect[3][7];
 SDL_Rect ballrect;
 void InitializeBrick(){
@@ -94,6 +105,7 @@ void ball_brick_collision(){
             if(a){
             brickrect[i][j].x=30000;
             ballvely=-ballvely;
+            delete_brick_count++;
             }
             a=false;
         }
@@ -113,14 +125,17 @@ void ball_collision(){
     }
 }
 
+void winning(){
+    SDL_Surface *win=IMG_Load("win.png");
+    SDL_Texture *wintexture=SDL_CreateTextureFromSurface(renderer,win);
+    SDL_Rect winrect={250,200,350,350};
+    SDL_RenderCopy(renderer,wintexture,NULL,&winrect);
+    // SDL_RenderPresent(renderer);
+}
 int main(int argc, char** argv){
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window *window = SDL_CreateWindow("My Game",
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          800, 600,
-                                          SDL_WINDOW_SHOWN);
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+    
+    
     
     SDL_Rect bkrect ={0,0,800,600};
     InitializeBrick();
@@ -141,7 +156,15 @@ int main(int argc, char** argv){
         moveBall();
         ball_collision();
         ball_brick_collision();
-        SDL_RenderCopy(renderer, bktexture, NULL,&bkrect);
+        if(delete_brick_count==no_of_brick){
+            winning();
+            // while(!quit){
+            //     EnvenHandler();
+            // }
+            // SDL_Quit();
+        }
+        SDL_RenderCopy(renderer, bktexture, NULL,&bkrect);  
+
         SDL_RenderCopy(renderer, balltexture, NULL, &ballrect);
         SDL_RenderCopy(renderer, battexture, NULL, &batrect);
         for(int i=0;i<3;i++){

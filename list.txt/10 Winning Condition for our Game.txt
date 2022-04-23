@@ -1,0 +1,2 @@
+ở bài này sẽ chuyển đến màn hình có chiến thắng
+khi thắng nó sẽ chuyển sang màn hình mới 
